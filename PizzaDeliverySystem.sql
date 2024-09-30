@@ -16,6 +16,139 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
+-- Table structure for table `customer`
+--
+
+DROP TABLE IF EXISTS `customer`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `customer` (
+  `customer_id` int NOT NULL AUTO_INCREMENT,
+  `name` varchar(25) DEFAULT NULL,
+  `birthdate` date DEFAULT NULL,
+  `phone_number` varchar(15) DEFAULT NULL,
+  `address` varchar(100) DEFAULT NULL,
+  `username` varchar(15) DEFAULT NULL,
+  `password` varchar(30) DEFAULT NULL,
+  `total_pizzas_ordered` int DEFAULT NULL,
+  PRIMARY KEY (`customer_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `customer`
+--
+
+LOCK TABLES `customer` WRITE;
+/*!40000 ALTER TABLE `customer` DISABLE KEYS */;
+/*!40000 ALTER TABLE `customer` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `delivery`
+--
+
+DROP TABLE IF EXISTS `delivery`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `delivery` (
+  `delivery_id` int NOT NULL AUTO_INCREMENT,
+  `deliverer_id` int DEFAULT NULL,
+  `start_time` datetime DEFAULT NULL,
+  `status` varchar(20) DEFAULT NULL,
+  PRIMARY KEY (`delivery_id`),
+  KEY `deliverer_id` (`deliverer_id`),
+  CONSTRAINT `delivery_ibfk_1` FOREIGN KEY (`deliverer_id`) REFERENCES `delivery_person` (`deliverer_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `delivery`
+--
+
+LOCK TABLES `delivery` WRITE;
+/*!40000 ALTER TABLE `delivery` DISABLE KEYS */;
+/*!40000 ALTER TABLE `delivery` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `delivery_order`
+--
+
+DROP TABLE IF EXISTS `delivery_order`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `delivery_order` (
+  `delivery_id` int NOT NULL,
+  `order_id` int NOT NULL,
+  PRIMARY KEY (`delivery_id`,`order_id`),
+  KEY `order_id` (`order_id`),
+  CONSTRAINT `delivery_order_ibfk_1` FOREIGN KEY (`delivery_id`) REFERENCES `delivery` (`delivery_id`),
+  CONSTRAINT `delivery_order_ibfk_2` FOREIGN KEY (`order_id`) REFERENCES `orders` (`order_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `delivery_order`
+--
+
+LOCK TABLES `delivery_order` WRITE;
+/*!40000 ALTER TABLE `delivery_order` DISABLE KEYS */;
+/*!40000 ALTER TABLE `delivery_order` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `delivery_person`
+--
+
+DROP TABLE IF EXISTS `delivery_person`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `delivery_person` (
+  `deliverer_id` int NOT NULL AUTO_INCREMENT,
+  `name` varchar(25) DEFAULT NULL,
+  `shift` tinyint(1) DEFAULT NULL,
+  `is_available` tinyint(1) DEFAULT NULL,
+  PRIMARY KEY (`deliverer_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `delivery_person`
+--
+
+LOCK TABLES `delivery_person` WRITE;
+/*!40000 ALTER TABLE `delivery_person` DISABLE KEYS */;
+/*!40000 ALTER TABLE `delivery_person` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `discount_code`
+--
+
+DROP TABLE IF EXISTS `discount_code`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `discount_code` (
+  `code` varchar(6) NOT NULL,
+  `discount_percent` decimal(3,2) DEFAULT NULL,
+  `is_used` tinyint(1) DEFAULT NULL,
+  `customer_id` int DEFAULT NULL,
+  `valid_to` date DEFAULT NULL,
+  PRIMARY KEY (`code`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `discount_code`
+--
+
+LOCK TABLES `discount_code` WRITE;
+/*!40000 ALTER TABLE `discount_code` DISABLE KEYS */;
+/*!40000 ALTER TABLE `discount_code` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `orders`
 --
 
@@ -55,4 +188,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-09-24 18:01:22
+-- Dump completed on 2024-09-30 13:06:16
