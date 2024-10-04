@@ -123,6 +123,30 @@ LOCK TABLES `delivery_person` WRITE;
 UNLOCK TABLES;
 
 --
+-- Table structure for table `dessert`
+--
+
+DROP TABLE IF EXISTS `dessert`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `dessert` (
+  `dessert_id` int NOT NULL AUTO_INCREMENT,
+  `name` varchar(25) DEFAULT NULL,
+  `cost` decimal(5,2) DEFAULT NULL,
+  PRIMARY KEY (`dessert_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `dessert`
+--
+
+LOCK TABLES `dessert` WRITE;
+/*!40000 ALTER TABLE `dessert` DISABLE KEYS */;
+/*!40000 ALTER TABLE `dessert` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `discount_code`
 --
 
@@ -146,6 +170,137 @@ CREATE TABLE `discount_code` (
 LOCK TABLES `discount_code` WRITE;
 /*!40000 ALTER TABLE `discount_code` DISABLE KEYS */;
 /*!40000 ALTER TABLE `discount_code` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `drink`
+--
+
+DROP TABLE IF EXISTS `drink`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `drink` (
+  `drink_id` int NOT NULL AUTO_INCREMENT,
+  `name` varchar(25) DEFAULT NULL,
+  `cost` decimal(5,2) DEFAULT NULL,
+  PRIMARY KEY (`drink_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `drink`
+--
+
+LOCK TABLES `drink` WRITE;
+/*!40000 ALTER TABLE `drink` DISABLE KEYS */;
+/*!40000 ALTER TABLE `drink` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `ingredient`
+--
+
+DROP TABLE IF EXISTS `ingredient`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `ingredient` (
+  `ingredient_id` int NOT NULL AUTO_INCREMENT,
+  `name` varchar(25) DEFAULT NULL,
+  `cost` decimal(5,2) DEFAULT NULL,
+  `is_vegetarian` tinyint(1) DEFAULT NULL,
+  `is_vegan` tinyint(1) DEFAULT NULL,
+  PRIMARY KEY (`ingredient_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `ingredient`
+--
+
+LOCK TABLES `ingredient` WRITE;
+/*!40000 ALTER TABLE `ingredient` DISABLE KEYS */;
+/*!40000 ALTER TABLE `ingredient` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `order_dessert`
+--
+
+DROP TABLE IF EXISTS `order_dessert`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `order_dessert` (
+  `dessert_id` int NOT NULL,
+  `order_id` int NOT NULL,
+  `quantity` int DEFAULT NULL,
+  PRIMARY KEY (`dessert_id`,`order_id`),
+  KEY `order_id` (`order_id`),
+  CONSTRAINT `order_dessert_ibfk_1` FOREIGN KEY (`dessert_id`) REFERENCES `dessert` (`dessert_id`),
+  CONSTRAINT `order_dessert_ibfk_2` FOREIGN KEY (`order_id`) REFERENCES `orders` (`order_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `order_dessert`
+--
+
+LOCK TABLES `order_dessert` WRITE;
+/*!40000 ALTER TABLE `order_dessert` DISABLE KEYS */;
+/*!40000 ALTER TABLE `order_dessert` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `order_drink`
+--
+
+DROP TABLE IF EXISTS `order_drink`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `order_drink` (
+  `drink_id` int NOT NULL,
+  `order_id` int NOT NULL,
+  `quantity` int DEFAULT NULL,
+  PRIMARY KEY (`drink_id`,`order_id`),
+  KEY `order_id` (`order_id`),
+  CONSTRAINT `order_drink_ibfk_1` FOREIGN KEY (`drink_id`) REFERENCES `drink` (`drink_id`),
+  CONSTRAINT `order_drink_ibfk_2` FOREIGN KEY (`order_id`) REFERENCES `orders` (`order_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `order_drink`
+--
+
+LOCK TABLES `order_drink` WRITE;
+/*!40000 ALTER TABLE `order_drink` DISABLE KEYS */;
+/*!40000 ALTER TABLE `order_drink` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `order_pizza`
+--
+
+DROP TABLE IF EXISTS `order_pizza`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `order_pizza` (
+  `pizza_id` int NOT NULL,
+  `order_id` int NOT NULL,
+  `quantity` int DEFAULT NULL,
+  PRIMARY KEY (`pizza_id`,`order_id`),
+  KEY `order_id` (`order_id`),
+  CONSTRAINT `order_pizza_ibfk_1` FOREIGN KEY (`pizza_id`) REFERENCES `pizza` (`pizza_id`),
+  CONSTRAINT `order_pizza_ibfk_2` FOREIGN KEY (`order_id`) REFERENCES `orders` (`order_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `order_pizza`
+--
+
+LOCK TABLES `order_pizza` WRITE;
+/*!40000 ALTER TABLE `order_pizza` DISABLE KEYS */;
+/*!40000 ALTER TABLE `order_pizza` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -178,6 +333,58 @@ LOCK TABLES `orders` WRITE;
 /*!40000 ALTER TABLE `orders` DISABLE KEYS */;
 /*!40000 ALTER TABLE `orders` ENABLE KEYS */;
 UNLOCK TABLES;
+
+--
+-- Table structure for table `pizza`
+--
+
+DROP TABLE IF EXISTS `pizza`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `pizza` (
+  `pizza_id` int NOT NULL AUTO_INCREMENT,
+  `name` varchar(25) DEFAULT NULL,
+  `price` decimal(5,2) DEFAULT NULL,
+  `is_vegetarian` tinyint(1) DEFAULT NULL,
+  `is_vegan` tinyint(1) DEFAULT NULL,
+  PRIMARY KEY (`pizza_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `pizza`
+--
+
+LOCK TABLES `pizza` WRITE;
+/*!40000 ALTER TABLE `pizza` DISABLE KEYS */;
+/*!40000 ALTER TABLE `pizza` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `pizza_ingredient`
+--
+
+DROP TABLE IF EXISTS `pizza_ingredient`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `pizza_ingredient` (
+  `pizza_id` int NOT NULL,
+  `ingredient_id` int NOT NULL,
+  PRIMARY KEY (`pizza_id`,`ingredient_id`),
+  KEY `ingredient_id` (`ingredient_id`),
+  CONSTRAINT `pizza_ingredient_ibfk_1` FOREIGN KEY (`pizza_id`) REFERENCES `pizza` (`pizza_id`),
+  CONSTRAINT `pizza_ingredient_ibfk_2` FOREIGN KEY (`ingredient_id`) REFERENCES `ingredient` (`ingredient_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `pizza_ingredient`
+--
+
+LOCK TABLES `pizza_ingredient` WRITE;
+/*!40000 ALTER TABLE `pizza_ingredient` DISABLE KEYS */;
+/*!40000 ALTER TABLE `pizza_ingredient` ENABLE KEYS */;
+UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
@@ -188,4 +395,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-09-30 13:06:16
+-- Dump completed on 2024-10-04 12:56:26
