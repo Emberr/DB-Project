@@ -4,6 +4,14 @@ import bcrypt
 
 app = Flask(__name__)
 app.secret_key = 'your_secret_key'
+
+def get_db_connection():
+    return mysql.connector.connect(
+        host="localhost",
+        user="root",
+        password="qazWSX123!@#",
+        database="PizzaDeliverySystem"
+    )
 # # Registration route
 @app.route('/register', methods=['GET', 'POST'])
 def register():
@@ -91,16 +99,6 @@ def logout():
     flash('You have been logged out.')
     return redirect(url_for('login'))
 
-
-
-# MySQL connection setup
-def get_db_connection():
-    return mysql.connector.connect(
-        host="localhost",
-        user="root",
-        password="ASALanas20)%",
-        database="PizzaDeliverySystem"
-    )
 
 # Login route
 @app.route('/login', methods=['GET', 'POST'])
