@@ -14,7 +14,7 @@ def dashboard():
 
 @dashboard_pointer.route('/cart')
 def cart():
-    username = request.args.get('username')
+    username = session.get('username')
     if not username:
         flash('Please log in first.')
         return redirect(url_for('login.login'))
@@ -23,7 +23,7 @@ def cart():
 
 @dashboard_pointer.route('/orders')
 def orders():
-    username = request.args.get('username')
+    username = session.get('username')
     if not username:
         flash('Please log in first.')
         return redirect(url_for('login.login'))

@@ -1,9 +1,9 @@
 import sqlalchemy as sa
 from sqlalchemy.dialects.mysql import DECIMAL, VARCHAR, DATE, INTEGER
-from sqlalchemy import Column, Integer, String, Date, DateTime, ForeignKey, Boolean
+from sqlalchemy import Column, Integer, String, Date, DateTime, ForeignKey, Boolean, insert
 from sqlalchemy.orm import sessionmaker, declarative_base, relationship
 
-engine = sa.create_engine('mysql+pymysql://root:qazWSX123%21%40%23@localhost/PizzaDeliverySystem')
+engine = sa.create_engine('mysql+pymysql://root:qazWSX123%21%40%23@localhost/PDS')
 Base = declarative_base()
 
 class Customer(Base):
@@ -16,6 +16,7 @@ class Customer(Base):
     username = Column(String(10), unique=True)
     password = Column(String(255))
     total_pizzas_ordered = Column(Integer)
+    gender = Column(String(5))
     discount_codes = relationship('DiscountCode', back_populates='customer')
     orders = relationship('Order', back_populates='customer')
 
@@ -48,16 +49,13 @@ class Order(Base):
 class Pizza(Base):
     __tablename__ = 'pizza'
     pizza_id = Column(Integer, primary_key=True)
-    name = Column(String(25))
-    price = Column(DECIMAL(5, 2))
-    is_vegetarian = Column(Boolean)
-    is_vegan = Column(Boolean)
+    name = Column(String(255))
     ingredients = relationship('PizzaIngredient', back_populates='pizza')
 
 class Ingredient(Base):
     __tablename__ = 'ingredient'
     ingredient_id = Column(Integer, primary_key=True)
-    name = Column(String(25))
+    name = Column(String(255))
     cost = Column(DECIMAL(5, 2))
     is_vegetarian = Column(Boolean)
     is_vegan = Column(Boolean)
@@ -81,7 +79,7 @@ class OrderPizza(Base):
 class Dessert(Base):
     __tablename__ = 'dessert'
     dessert_id = Column(Integer, primary_key=True)
-    name = Column(String(25))
+    name = Column(String(100))
     cost = Column(DECIMAL(5, 2))
     orders = relationship('OrderDessert', back_populates='dessert')
 
@@ -96,7 +94,7 @@ class OrderDessert(Base):
 class Drink(Base):
     __tablename__ = 'drink'
     drink_id = Column(Integer, primary_key=True)
-    name = Column(String(25))
+    name = Column(String(100))
     cost = Column(DECIMAL(5, 2))
     orders = relationship('OrderDrink', back_populates='drink')
 

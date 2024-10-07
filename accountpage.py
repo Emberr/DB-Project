@@ -31,7 +31,8 @@ def account():
             'phone_number': customer.phone_number,
             'address': customer.address,
             'birthdate': customer.birthdate,
-            'total_pizzas_ordered': customer.total_pizzas_ordered
+            'total_pizzas_ordered': customer.total_pizzas_ordered,
+            'gender': customer.gender
         }
         return render_template('account.html', customer=customer_info)
     else:

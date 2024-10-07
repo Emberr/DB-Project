@@ -4,6 +4,7 @@ from cartpage import cart_pointer
 from login import login_pointer
 from dashboard import dashboard_pointer
 from accountpage import account_pointer
+from itemspage import items_pointer
 import atexit
 
 app = Flask(__name__)
@@ -14,6 +15,8 @@ app.register_blueprint(login_pointer)
 app.register_blueprint(dashboard_pointer)
 app.register_blueprint(account_pointer)
 app.register_blueprint(cart_pointer)
+app.register_blueprint(items_pointer)
+
 
 def cleanup_sessions():
     with app.app_context():

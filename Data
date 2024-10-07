@@ -1,0 +1,54 @@
+with engine.connect() as conn:
+    conn.execute(
+        insert(Pizza),
+        [
+            {'name': 'Gooey Cheese ALL Over Your Face (Four Cheese Pizza)'},
+            {'name': 'So Not Halal Mode (Pepperoni Pizza)'},
+            {'name': 'Performance Enhancer (Pineapple Pizza)'},
+            {'name': 'Veggie Virgin (Vegetarian Pizza)'},
+            {'name': 'Vegan (Not good, do not order)'},
+            {'name': 'Indian Slums (Chicken Curry Pizza)'},
+            {'name': 'The Border Jumper (Mexican Pizza)'},
+            {'name': "O'Block (Chicago's Finest Pizza)"},
+            {'name': 'The Bomber (Kebab Pizza)'},
+            {'name': 'The Greek Freak (Gyros Pizza)'}
+        ]
+    )
+    conn.execute(
+        insert(Ingredient),
+        [
+            {'name': 'Mozzarella Cheese', 'cost': 1.50, 'is_vegetarian': True, 'is_vegan': False},
+    {'name': 'Vegan Mozzarella Cheese', 'cost': 2.00, 'is_vegetarian': True, 'is_vegan': True},
+    {'name': 'Cheddar Cheese', 'cost': 1.50, 'is_vegetarian': True, 'is_vegan': False},
+    {'name': 'Parmesan Cheese', 'cost': 1.75, 'is_vegetarian': True, 'is_vegan': False},
+    {'name': 'Gorgonzola Cheese', 'cost': 2.00, 'is_vegetarian': True, 'is_vegan': False},
+    {'name': 'Tomato Sauce', 'cost': 0.50, 'is_vegetarian': True, 'is_vegan': True},
+    {'name': 'Pizza Dough', 'cost': 2.00, 'is_vegetarian': True, 'is_vegan': True},
+    {'name': 'Pepperoni', 'cost': 3.00, 'is_vegetarian': False, 'is_vegan': False},
+    {'name': 'Pineapple', 'cost': 1.00, 'is_vegetarian': True, 'is_vegan': True},
+    {'name': 'Bell Pepper', 'cost': 0.75, 'is_vegetarian': True, 'is_vegan': True},
+    {'name': 'Onion', 'cost': 0.50, 'is_vegetarian': True, 'is_vegan': True},
+    {'name': 'Black Olives', 'cost': 1.00, 'is_vegetarian': True, 'is_vegan': True},
+    {'name': 'Chicken', 'cost': 3.50, 'is_vegetarian': False, 'is_vegan': False},
+    {'name': 'Curry Sauce', 'cost': 1.50, 'is_vegetarian': True, 'is_vegan': True},
+    {'name': 'Kebab Meat', 'cost': 3.50, 'is_vegetarian': False, 'is_vegan': False},
+    {'name': 'Gyros Meat', 'cost': 3.00, 'is_vegetarian': False, 'is_vegan': False},
+    {'name': 'Jalapeños', 'cost': 0.75, 'is_vegetarian': True, 'is_vegan': True},
+    {'name': 'Black Beans', 'cost': 0.75, 'is_vegetarian': True, 'is_vegan': True},
+    {'name': 'Italian Sausage', 'cost': 3.00, 'is_vegetarian': False, 'is_vegan': False}
+        ]
+    )
+    conn.execute(
+        insert(Dessert),
+        [
+            {'name': 'Twin Tower Explosion', 'cost': 9.11},
+            {'name': 'Pompeii Lava Cake', 'cost': 7.90}
+        ]
+    )
+    conn.execute(
+        insert(Drink),
+        [
+            {'name': 'Cloudy White Milkshake', 'cost': 3.50},
+            {'name': 'Get Drunk(10 Shot Cocktail)', 'cost': 9.50}
+        ]
+    )

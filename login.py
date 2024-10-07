@@ -14,6 +14,7 @@ def register():
         phone_number = request.form['phone_number']
         address = request.form['address']
         birthdate = request.form['birthdate']
+        gender = request.form['gender']
 
         session_db = Session()
         existing_user = session_db.query(Customer).filter_by(username=username).first()
@@ -30,7 +31,8 @@ def register():
                 phone_number=phone_number,
                 address=address,
                 birthdate=birthdate,
-                total_pizzas_ordered=0
+                total_pizzas_ordered=0,
+                gender=gender
             )
             session_db.add(new_customer)
             session_db.commit()

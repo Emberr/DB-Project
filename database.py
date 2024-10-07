@@ -5,5 +5,5 @@ def get_db_connection():
         host="localhost",
         user="root",
         password="qazWSX123!@#",
-        database="PizzaDeliverySystem"
+        database="PDS"
     )
