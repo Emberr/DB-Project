@@ -1,25 +1,38 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Items</title>
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
+
 <body class="bg-gray-100 min-h-screen flex flex-col items-center justify-center text-center">
 
     <h2 class="text-3xl font-bold text-gray-800 mb-4">Items</h2>
+    <h1 class="text-3xl font-bold text-gray-800 mb-4">Pizzas</h1>
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+
         {% for pizza in pizzas %}
         <div class="bg-white p-6 rounded-lg shadow-lg">
             <h3 class="text-xl font-semibold mb-2">{{ pizza.name }}</h3>
+            <p class="text-gray-600 mb-2">{{ pizza.ingredients | join(', ') }}</p>
+            <p class="text-gray-600 mb-2">Price: ${{ pizza.price }}</p>
             <form action="/add_to_cart" method="post">
                 <input type="hidden" name="item_id" value="{{ pizza.pizza_id }}">
                 <input type="hidden" name="item_type" value="pizza">
-                <button type="submit" class="bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-600 transition duration-200">Add to Cart</button>
+                <button type="submit"
+                    class="bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-600 transition duration-200">Add to
+                    Cart</button>
             </form>
         </div>
         {% endfor %}
+    </div>
+    <br>
+    <br>
+    <h1 class="text-3xl font-bold text-gray-800 mb-4">Drinks</h1>
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
 
         {% for drink in drinks %}
         <div class="bg-white p-6 rounded-lg shadow-lg">
@@ -27,10 +40,17 @@
             <form action="/add_to_cart" method="post">
                 <input type="hidden" name="item_id" value="{{ drink.drink_id }}">
                 <input type="hidden" name="item_type" value="drink">
-                <button type="submit" class="bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-600 transition duration-200">Add to Cart</button>
+                <button type="submit"
+                    class="bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-600 transition duration-200">Add to
+                    Cart</button>
             </form>
         </div>
         {% endfor %}
+    </div>
+    <br>
+    <br>
+    <h1 class="text-3xl font-bold text-gray-800 mb-4">Desserts</h1>
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
 
         {% for dessert in desserts %}
         <div class="bg-white p-6 rounded-lg shadow-lg">
@@ -38,11 +58,15 @@
             <form action="/add_to_cart" method="post">
                 <input type="hidden" name="item_id" value="{{ dessert.dessert_id }}">
                 <input type="hidden" name="item_type" value="dessert">
-                <button type="submit" class="bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-600 transition duration-200">Add to Cart</button>
+                <button type="submit"
+                    class="bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-600 transition duration-200">Add to
+                    Cart</button>
             </form>
         </div>
         {% endfor %}
     </div>
+    </div>
 
 </body>
+
 </html>

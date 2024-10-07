@@ -1,9 +1,11 @@
 from sqlalchemy import create_engine, insert
 from sqlalchemy.orm import sessionmaker
-from TABLES import Ingredient, Base, Pizza, Drink, Dessert
+from TABLES import Ingredient, Base, Pizza, Drink, Dessert, PizzaIngredient
+
+password = 'lolxd100A'
 
 # Create an engine
-engine = create_engine('mysql+pymysql://root:qazWSX123%21%40%23@localhost/PDS')
+engine = create_engine(f'mysql+pymysql://root:{password}@localhost/PDS')
 
 # Create a configured "Session" class
 Session = sessionmaker(bind=engine)
@@ -11,32 +13,83 @@ Session = sessionmaker(bind=engine)
 # Create a session
 session = Session()
 
+
+
 # Insert data
-ingredients = [
-    {'name': 'Mozzarella Cheese', 'cost': 1.50, 'is_vegetarian': True, 'is_vegan': False},
-    {'name': 'Vegan Mozzarella Cheese', 'cost': 2.00, 'is_vegetarian': True, 'is_vegan': True},
-    {'name': 'Cheddar Cheese', 'cost': 1.50, 'is_vegetarian': True, 'is_vegan': False},
-    {'name': 'Parmesan Cheese', 'cost': 1.75, 'is_vegetarian': True, 'is_vegan': False},
-    {'name': 'Gorgonzola Cheese', 'cost': 2.00, 'is_vegetarian': True, 'is_vegan': False},
-    {'name': 'Tomato Sauce', 'cost': 0.50, 'is_vegetarian': True, 'is_vegan': True},
-    {'name': 'Pizza Dough', 'cost': 2.00, 'is_vegetarian': True, 'is_vegan': True},
-    {'name': 'Pepperoni', 'cost': 3.00, 'is_vegetarian': False, 'is_vegan': False},
-    {'name': 'Pineapple', 'cost': 1.00, 'is_vegetarian': True, 'is_vegan': True},
-    {'name': 'Bell Pepper', 'cost': 0.75, 'is_vegetarian': True, 'is_vegan': True},
-    {'name': 'Onion', 'cost': 0.50, 'is_vegetarian': True, 'is_vegan': True},
-    {'name': 'Black Olives', 'cost': 1.00, 'is_vegetarian': True, 'is_vegan': True},
-    {'name': 'Chicken', 'cost': 3.50, 'is_vegetarian': False, 'is_vegan': False},
-    {'name': 'Curry Sauce', 'cost': 1.50, 'is_vegetarian': True, 'is_vegan': True},
-    {'name': 'Kebab Meat', 'cost': 3.50, 'is_vegetarian': False, 'is_vegan': False},
-    {'name': 'Gyros Meat', 'cost': 3.00, 'is_vegetarian': False, 'is_vegan': False},
-    {'name': 'Jalapeños', 'cost': 0.75, 'is_vegetarian': True, 'is_vegan': True},
-    {'name': 'Black Beans', 'cost': 0.75, 'is_vegetarian': True, 'is_vegan': True},
-    {'name': 'Italian Sausage', 'cost': 3.00, 'is_vegetarian': False, 'is_vegan': False}
+pizza_ingredients = [
+    # Gooey Cheese ALL Over Your Face (Four Cheese Pizza)
+    {'pizza_id': 1, 'ingredient_id': 1},  # Mozzarella Cheese
+    {'pizza_id': 1, 'ingredient_id': 3},  # Cheddar Cheese
+    {'pizza_id': 1, 'ingredient_id': 4},  # Parmesan Cheese
+    {'pizza_id': 1, 'ingredient_id': 5},  # Gorgonzola Cheese
+    {'pizza_id': 1, 'ingredient_id': 6},  # Tomato Sauce
+    {'pizza_id': 1, 'ingredient_id': 7},  # Pizza Dough
+
+    # So Not Halal Mode (Pepperoni Pizza)
+    {'pizza_id': 2, 'ingredient_id': 1},  # Mozzarella Cheese
+    {'pizza_id': 2, 'ingredient_id': 8},  # Pepperoni
+    {'pizza_id': 2, 'ingredient_id': 19},  # Italian Sausage
+    {'pizza_id': 2, 'ingredient_id': 6},  # Tomato Sauce
+    {'pizza_id': 2, 'ingredient_id': 7},  # Pizza Dough
+
+    # Performance Enhancer (Pineapple Pizza)
+    {'pizza_id': 3, 'ingredient_id': 1},  # Mozzarella Cheese
+    {'pizza_id': 3, 'ingredient_id': 6},  # Tomato Sauce
+    {'pizza_id': 3, 'ingredient_id': 7},  # Pizza Dough
+    {'pizza_id': 3, 'ingredient_id': 9},  # Pineapple
+
+    # Veggie Virgin (Vegetarian Pizza)
+    {'pizza_id': 4, 'ingredient_id': 1},  # Mozzarella Cheese
+    {'pizza_id': 4, 'ingredient_id': 6},  # Tomato Sauce
+    {'pizza_id': 4, 'ingredient_id': 7},  # Pizza Dough
+    {'pizza_id': 4, 'ingredient_id': 10},  # Bell Pepper
+    {'pizza_id': 4, 'ingredient_id': 11},  # Onion
+    {'pizza_id': 4, 'ingredient_id': 12},  # Black Olives
+
+    # Vegan (Not good, do not order)
+    {'pizza_id': 5, 'ingredient_id': 2},  # Vegan Mozzarella Cheese
+    {'pizza_id': 5, 'ingredient_id': 6},  # Tomato Sauce
+    {'pizza_id': 5, 'ingredient_id': 7},  # Pizza Dough
+
+    # Indian Slums (Chicken Curry Pizza)
+    {'pizza_id': 6, 'ingredient_id': 1},  # Mozzarella Cheese
+    {'pizza_id': 6, 'ingredient_id': 6},  # Tomato Sauce
+    {'pizza_id': 6, 'ingredient_id': 7},  # Pizza Dough
+    {'pizza_id': 6, 'ingredient_id': 13},  # Chicken
+    {'pizza_id': 6, 'ingredient_id': 14},  # Curry Sauce
+
+    # The Border Jumper (Mexican Pizza)
+    {'pizza_id': 7, 'ingredient_id': 1},  # Mozzarella Cheese
+    {'pizza_id': 7, 'ingredient_id': 6},  # Tomato Sauce
+    {'pizza_id': 7, 'ingredient_id': 7},  # Pizza Dough
+    {'pizza_id': 7, 'ingredient_id': 17},  # Jalapeños
+    {'pizza_id': 7, 'ingredient_id': 18},  # Black Beans
+
+    # O'Block (Chicago's Finest Pizza)
+    {'pizza_id': 8, 'ingredient_id': 1},  # Mozzarella Cheese
+    {'pizza_id': 8, 'ingredient_id': 3},  # Cheddar Cheese
+    {'pizza_id': 8, 'ingredient_id': 6},  # Tomato Sauce
+    {'pizza_id': 8, 'ingredient_id': 7},  # Pizza Dough
+    {'pizza_id': 8, 'ingredient_id': 8},  # Pepperoni
+    {'pizza_id': 8, 'ingredient_id': 19},  # Italian Sausage
+
+    # The Bomber (Kebab Pizza)
+    {'pizza_id': 9, 'ingredient_id': 1},  # Mozzarella Cheese
+    {'pizza_id': 9, 'ingredient_id': 6},  # Tomato Sauce
+    {'pizza_id': 9, 'ingredient_id': 7},  # Pizza Dough
+    {'pizza_id': 9, 'ingredient_id': 15},  # Kebab Meat
+
+    # The Greek Freak (Gyros Pizza)
+    {'pizza_id': 10, 'ingredient_id': 1},  # Mozzarella Cheese
+    {'pizza_id': 10, 'ingredient_id': 6},  # Tomato Sauce
+    {'pizza_id': 10, 'ingredient_id': 7},  # Pizza Dough
+    {'pizza_id': 10, 'ingredient_id': 16},  # Gyros Meat
 ]
 
+
 # Add and commit the data
-for ingredient in ingredients:
-    session.execute(insert(Ingredient).values(ingredient))
+for pizza_ingredient in pizza_ingredients:
+    session.execute(insert(PizzaIngredient).values(pizza_ingredient))
 
 # Commit the transaction
 session.commit()

@@ -3,7 +3,9 @@ from sqlalchemy.dialects.mysql import DECIMAL, VARCHAR, DATE, INTEGER
 from sqlalchemy import Column, Integer, String, Date, DateTime, ForeignKey, Boolean, insert
 from sqlalchemy.orm import sessionmaker, declarative_base, relationship
 
-engine = sa.create_engine('mysql+pymysql://root:qazWSX123%21%40%23@localhost/PDS')
+password = 'lolxd100A'
+
+engine = sa.create_engine(f'mysql+pymysql://root:{password}@localhost/PDS')
 Base = declarative_base()
 
 class Customer(Base):

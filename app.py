@@ -17,7 +17,6 @@ app.register_blueprint(account_pointer)
 app.register_blueprint(cart_pointer)
 app.register_blueprint(items_pointer)
 
-
 def cleanup_sessions():
     with app.app_context():
         session.clear()
