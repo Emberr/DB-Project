@@ -12,15 +12,6 @@ def dashboard():
 
     return render_template('dashboard.html', username=username)
 
-@dashboard_pointer.route('/cart')
-def cart():
-    username = session.get('username')
-    if not username:
-        flash('Please log in first.')
-        return redirect(url_for('login.login'))
-
-    return f"Cart page for {username} - Coming soon!"
-
 @dashboard_pointer.route('/orders')
 def orders():
     username = session.get('username')

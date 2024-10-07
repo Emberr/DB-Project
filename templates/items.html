@@ -6,9 +6,26 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Items</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        function addToCart(event, form) {
+            event.preventDefault();
+            fetch(form.action, {
+                method: form.method,
+                body: new FormData(form)
+            }).then(response => {
+                if (response.ok) {
+                    alert('Item added to cart');
+                }
+            });
+        }
+    </script>
 </head>
 
 <body class="bg-gray-100 min-h-screen flex flex-col items-center justify-center text-center">
+
+    <div class="w-full flex justify-end p-4">
+        <a href="/dashboard?username={{ username }}" class="bg-blue-500 text-white py-2 px-4 rounded-lg font-semibold hover:bg-blue-600 transition duration-200">Return to Dashboard</a>
+    </div>
 
     <h2 class="text-3xl font-bold text-gray-800 mb-4">Items</h2>
     <h1 class="text-3xl font-bold text-gray-800 mb-4">Pizzas</h1>
@@ -19,12 +36,12 @@
             <h3 class="text-xl font-semibold mb-2">{{ pizza.name }}</h3>
             <p class="text-gray-600 mb-2">{{ pizza.ingredients | join(', ') }}</p>
             <p class="text-gray-600 mb-2">Price: ${{ pizza.price }}</p>
-            <form action="/add_to_cart" method="post">
-                <input type="hidden" name="item_id" value="{{ pizza.pizza_id }}">
+            <form action="/add_to_cart" method="post" onsubmit="addToCart(event, this)">
+                <input type="hidden" name="item_id" value="{{ pizza.name }}">
                 <input type="hidden" name="item_type" value="pizza">
-                <button type="submit"
-                    class="bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-600 transition duration-200">Add to
-                    Cart</button>
+                <input type="hidden" name="item_name" value="{{pizza.name}}">
+                <input type="hidden" name="item_price" value="{{pizza.price}}">
+                <button type="submit" class="bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-600 transition duration-200">Add to Cart</button>
             </form>
         </div>
         {% endfor %}
@@ -37,12 +54,13 @@
         {% for drink in drinks %}
         <div class="bg-white p-6 rounded-lg shadow-lg">
             <h3 class="text-xl font-semibold mb-2">{{ drink.name }}</h3>
-            <form action="/add_to_cart" method="post">
+            <p class="text-gray-600 mb-2">Price: ${{ drink.cost }}</p>
+            <form action="/add_to_cart" method="post" onsubmit="addToCart(event, this)">
                 <input type="hidden" name="item_id" value="{{ drink.drink_id }}">
                 <input type="hidden" name="item_type" value="drink">
-                <button type="submit"
-                    class="bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-600 transition duration-200">Add to
-                    Cart</button>
+                <input type="hidden" name="item_name" value="{{drink.name}}">
+                <input type="hidden" name="item_price" value="{{drink.cost}}">
+                <button type="submit" class="bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-600 transition duration-200">Add to Cart</button>
             </form>
         </div>
         {% endfor %}
@@ -55,16 +73,16 @@
         {% for dessert in desserts %}
         <div class="bg-white p-6 rounded-lg shadow-lg">
             <h3 class="text-xl font-semibold mb-2">{{ dessert.name }}</h3>
-            <form action="/add_to_cart" method="post">
+            <p class="text-gray-600 mb-2">Price: ${{ dessert.cost }}</p>
+            <form action="/add_to_cart" method="post" onsubmit="addToCart(event, this)">
                 <input type="hidden" name="item_id" value="{{ dessert.dessert_id }}">
                 <input type="hidden" name="item_type" value="dessert">
-                <button type="submit"
-                    class="bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-600 transition duration-200">Add to
-                    Cart</button>
+                <input type="hidden" name="item_name" value="{{dessert.name}}">
+                <input type="hidden" name="item_price" value="{{dessert.cost}}">
+                <button type="submit" class="bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-600 transition duration-200">Add to Cart</button>
             </form>
         </div>
         {% endfor %}
-    </div>
     </div>
 
 </body>

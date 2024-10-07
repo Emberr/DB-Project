@@ -18,6 +18,7 @@ def account():
         if customer:
             customer.address = new_address
             session_db.commit()
+            session['address'] = new_address
             flash('Address updated successfully.')
         else:
             flash('Customer not found.')

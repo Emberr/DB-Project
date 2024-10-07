@@ -5,7 +5,7 @@ from TABLES import Pizza, Drink, Ingredient, PizzaIngredient, Dessert
 
 items_pointer = Blueprint('items', __name__)
 
-password = 'lolxd100A'
+password = 'qazWSX123%21%40%23'
 
 # Create an engine
 engine = create_engine(f'mysql+pymysql://root:{password}@localhost/PDS')

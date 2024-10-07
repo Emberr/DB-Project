@@ -2,7 +2,7 @@ from sqlalchemy import create_engine, insert
 from sqlalchemy.orm import sessionmaker
 from TABLES import Ingredient, Base, Pizza, Drink, Dessert, PizzaIngredient
 
-password = 'lolxd100A'
+password = 'qazWSX123%21%40%23'
 
 # Create an engine
 engine = create_engine(f'mysql+pymysql://root:{password}@localhost/PDS')
