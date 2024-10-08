@@ -1,4 +1,3 @@
-<!-- templates/orders.html -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -15,6 +14,7 @@
                 clearInterval(interval);
                 timerElement.innerText = 'Order can no longer be canceled.';
                 cancelButton.disabled = true;
+                window.location.reload();
             } else {
                 const minutes = Math.floor(timeLeft / 60);
                 const seconds = timeLeft % 60;

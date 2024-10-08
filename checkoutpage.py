@@ -1,7 +1,7 @@
 import datetime
-from flask import Blueprint, render_template, session, redirect, url_for
+from flask import Blueprint, render_template, session, redirect, url_for, jsonify
 from sqlalchemy.orm import sessionmaker
-from TABLES import Customer, Session, Order, OrderDrink, OrderDessert, OrderPizza, Drink, Dessert, Pizza
+from TABLES import Customer, Session, Order, OrderDrink, OrderDessert, OrderPizza, Drink, Dessert, Pizza, DeliveryPerson
 
 checkout_pointer = Blueprint('checkout', __name__)
 
@@ -21,7 +21,11 @@ def checkout():
     total_price = "{:.2f}".format(sum(float(item['price']) for item in cart))
     address = session.get('address', customer.address)
 
-    return render_template('checkout.html', cart=cart, total_price=total_price, address=address)
+    # Get the list of possible delivery addresses
+    delivery_postal_codes = db_session.query(DeliveryPerson.postal_code).distinct().all()
+    delivery_postal_codes = [code[0] for code in delivery_postal_codes]
+
+    return render_template('checkout.html', cart=cart, total_price=total_price, address=address, delivery_postal_codes=delivery_postal_codes)
 
 @checkout_pointer.route('/place_order')
 def place_order():
@@ -37,6 +41,12 @@ def place_order():
     total_price = "{:.2f}".format(sum(float(item['price']) for item in cart))
     order_datetime = datetime.datetime.now()
     delivery_address = session.get('address', customer.address)
+
+    postal_code = delivery_address[:4]
+
+    delivery_person = db_session.query(DeliveryPerson).filter_by(postal_code=postal_code).first()
+    if not delivery_person:
+        return jsonify({'error': 'We do not deliver to this address. Please choose a valid delivery address.'})
 
     new_order = Order(
         customer_id=customer.customer_id,
@@ -80,10 +90,9 @@ def place_order():
                     existing_order_drink.quantity += quantity
                 else:
                     order_drink = OrderDrink(order_id=new_order.order_id, drink_id=drink.drink_id, quantity=quantity)
-                    db_session.add(order_drink)
 
     db_session.commit()
     session['customer_id'] = customer.customer_id
     session.pop('cart', None)
 
-    return redirect(url_for('order.orders'))
+    return jsonify({'success': True})

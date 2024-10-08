@@ -1,4 +1,3 @@
-<!-- templates/checkout.html -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -33,13 +32,35 @@
             <a href="/account" class="bg-blue-500 text-white py-2 px-4 rounded-lg font-semibold hover:bg-blue-600 transition duration-200 mt-2 inline-block">Change Address</a>
         </div>
         <div class="mb-4">
+            <h3 class="text-xl font-semibold text-gray-800">Possible Delivery Addresses</h3>
+            <ul>
+                {% for postal_code in delivery_postal_codes %}
+                <li>{{ postal_code }}XX</li>
+                {% endfor %}
+            </ul>
+        </div>
+        <div class="mb-4">
             <h3 class="text-xl font-semibold text-gray-800">Discount Code</h3>
             <form action="/apply_discount" method="post">
                 <input type="text" name="discount_code" class="border border-gray-300 p-2 rounded-lg w-full mb-2" placeholder="Enter discount code">
                 <button type="submit" class="bg-green-500 text-white py-2 px-4 rounded-lg font-semibold hover:bg-green-600 transition duration-200">Apply Discount</button>
             </form>
         </div>
-        <a href="/place_order" class="bg-green-500 text-white py-2 px-4 rounded-lg font-semibold hover:bg-green-600 transition duration-200 mt-4 inline-block">Place Order</a>
+        <button id="placeOrderButton" class="bg-green-500 text-white py-2 px-4 rounded-lg font-semibold hover:bg-green-600 transition duration-200 mt-4 inline-block">Place Order</button>
     </div>
+
+    <script>
+        document.getElementById('placeOrderButton').addEventListener('click', function() {
+            fetch('{{ url_for("checkout.place_order") }}')
+                .then(response => response.json())
+                .then(data => {
+                    if (data.error) {
+                        alert(data.error);
+                    } else if (data.success) {
+                        window.location.href = '{{ url_for("order.orders") }}';
+                    }
+                });
+        });
+    </script>
 </body>
 </html>

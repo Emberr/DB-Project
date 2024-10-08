@@ -28,7 +28,7 @@ def orders():
     db_session.close()
     new_session = Session()
 
-    orders = new_session.query(Order).filter_by(customer_id=customer_id).all()
+    orders = db_session.query(Order).filter_by(customer_id=customer_id).order_by(Order.order_datetime.desc()).all()
     current_time = time.time()
     for order in orders:
         order_placement_time = order.order_datetime.timestamp()
@@ -67,7 +67,7 @@ def all_orders():
         flash('You are not authorized to view this page.')
         return redirect(url_for('dashboard.dashboard'))
     new_session = Session()
-    orders = db_session.query(Order).all()
+    orders = db_session.query(Order).order_by(Order.order_datetime.desc()).all()
     for order in orders:
         if not can_cancel_order(order.order_datetime):
             order.status = 'Preparing'

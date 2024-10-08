@@ -112,8 +112,8 @@ class DeliveryPerson(Base):
     __tablename__ = 'delivery_person'
     deliverer_id = Column(Integer, primary_key=True)
     name = Column(String(25))
-    shift = Column(Boolean)
     is_available = Column(Boolean)
+    postal_code = Column(String(4))
     deliveries = relationship('Delivery', back_populates='deliverer')
 
 class Delivery(Base):
