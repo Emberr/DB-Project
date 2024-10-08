@@ -7,28 +7,56 @@
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body class="bg-gray-100 min-h-screen flex flex-col items-center justify-center text-center">
+    <div class="w-full flex justify-end p-4">
+        <a href="/dashboard" class="bg-blue-500 text-white py-2 px-4 rounded-lg font-semibold hover:bg-blue-600 transition duration-200">Return to Dashboard</a>
+    </div>
     <h1 class="text-3xl font-bold text-gray-800 mb-4">Monthly Earnings Report</h1>
-    <form method="post" class="mb-4">
-        <input type="text" name="region" placeholder="Region (City or Postal Code)" class="mb-2 p-2 border rounded">
-        <input type="text" name="gender" placeholder="Gender" class="mb-2 p-2 border rounded">
-        <input type="number" name="age" placeholder="Age" class="mb-2 p-2 border rounded">
-        <button type="submit" class="bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-600 transition duration-200">Filter</button>
-    </form>
-    <table class="table-auto bg-white shadow-md rounded-lg">
-        <thead>
-            <tr>
-                <th class="px-4 py-2">Month</th>
-                <th class="px-4 py-2">Total Earnings</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for row in report_data %}
-            <tr>
-                <td class="border px-4 py-2">{{ row.month }}</td>
-                <td class="border px-4 py-2">${{ row.total_earnings }}</td>
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
+    <div class="flex">
+        <div class="flex-1">
+            <form method="post" class="mb-4">
+                <input type="text" name="region" placeholder="Region (City or Postal Code)" class="mb-2 p-2 border rounded">
+                <input type="text" name="gender" placeholder="Gender" class="mb-2 p-2 border rounded">
+                <input type="number" name="age_min" placeholder="Min Age" class="mb-2 p-2 border rounded">
+                <input type="number" name="age_max" placeholder="Max Age" class="mb-2 p-2 border rounded">
+                <input type="month" name="month" class="mb-2 p-2 border rounded">
+                <button type="submit" class="bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-600 transition duration-200">Filter</button>
+            </form>
+            <table class="table-auto bg-white shadow-md rounded-lg">
+                <thead>
+                    <tr>
+                        <th class="px-4 py-2">Month</th>
+                        <th class="px-4 py-2">Total Earnings</th>
+                        <th class="px-4 py-2">Total Orders</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for row in report_data %}
+                    <tr>
+                        <td class="border px-4 py-2">{{ row.month }}</td>
+                        <td class="border px-4 py-2">${{ row.total_earnings }}</td>
+                        <td class="border px-4 py-2">{{ row.total_orders }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        <div class="w-1/4 bg-white shadow-md rounded-lg p-4 ml-4">
+            <h2 class="text-xl font-bold mb-2">Applied Filters</h2>
+            <ul>
+                {% if filters.region %}
+                <li><strong>Region:</strong> {{ filters.region }}</li>
+                {% endif %}
+                {% if filters.gender %}
+                <li><strong>Gender:</strong> {{ filters.gender }}</li>
+                {% endif %}
+                {% if filters.age_min and filters.age_max %}
+                <li><strong>Age Range:</strong> {{ filters.age_min }} - {{ filters.age_max }}</li>
+                {% endif %}
+                {% if filters.month %}
+                <li><strong>Month:</strong> {{ filters.month }}</li>
+                {% endif %}
+            </ul>
+        </div>
+    </div>
 </body>
 </html>

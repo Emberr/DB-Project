@@ -1,10 +1,17 @@
 from flask import Blueprint, render_template, session, flash, redirect, url_for, request, jsonify
 from TABLES import Session, Order, OrderPizza, OrderDessert, OrderDrink
 import time
+from datetime import datetime, timedelta
 
 order_pointer = Blueprint('order', __name__)
 
 db_session = Session()
+
+cancel_time_seconds = 60
+
+def can_cancel_order(order_datetime):
+    cancel_time_limit = order_datetime + timedelta(seconds=cancel_time_seconds)
+    return datetime.now() < cancel_time_limit
 
 @order_pointer.route('/orders')
 def orders():
@@ -25,7 +32,11 @@ def orders():
     current_time = time.time()
     for order in orders:
         order_placement_time = order.order_datetime.timestamp()
-        order.time_left = max(0, 20 - int(current_time - order_placement_time))
+        order.time_left = max(0, cancel_time_seconds - int(current_time - order_placement_time))
+        if not can_cancel_order(order.order_datetime):
+            order.status = 'Preparing'
+    new_session.commit()
+
     if orders:
         return render_template('orders.html', orders=orders)
     else:
@@ -57,21 +68,24 @@ def all_orders():
     if session.get('username') != 'admin':
         flash('You are not authorized to view this page.')
         return redirect(url_for('dashboard.dashboard'))
-
+    new_session = Session()
     orders = db_session.query(Order).all()
+    for order in orders:
+        if not can_cancel_order(order.order_datetime):
+            order.status = 'Preparing'
+    new_session.commit()
     return render_template('all_orders.html', orders=orders)
-
 
 @order_pointer.route('/update_order_status/<int:order_id>', methods=['POST'])
 def update_order_status(order_id):
-    data = request.get_json()
-    status = data.get('status')
+    if session.get('username') == 'admin':
+        new_status = request.form.get('status')
+        order = db_session.query(Order).filter_by(order_id=order_id).first()
 
-    order = db_session.query(Order).filter_by(order_id=order_id).first()
-    if order:
-        order.status = status
-        db_session.commit()
-        print(f"Order {order_id} status updated to {status}")
-        return jsonify({'message': 'Order status updated successfully'}), 200
-    else:
-        return jsonify({'message': 'Order not found'}), 404
+        if order:
+            order.status = new_status
+            db_session.commit()
+            flash(f"Order {order_id} status updated to {new_status}")
+        else:
+            flash('Order not found.')
+        return redirect(url_for('order.all_orders'))

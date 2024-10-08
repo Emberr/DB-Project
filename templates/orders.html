@@ -15,7 +15,6 @@
                 clearInterval(interval);
                 timerElement.innerText = 'Order can no longer be canceled.';
                 cancelButton.disabled = true;
-                updateOrderStatus(orderId, 'preparing');
             } else {
                 const minutes = Math.floor(timeLeft / 60);
                 const seconds = timeLeft % 60;
@@ -23,23 +22,6 @@
                 timeLeft--;
             }
         }, 1000);
-    }
-
-    function updateOrderStatus(orderId, status) {
-        fetch(`/update_order_status/${orderId}`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({ status: status })
-        }).then(response => {
-            if (!response.ok) {
-                console.error('Failed to update order status');
-            }
-        }).catch(error => {
-            console.error('Error:', error);
-        });
-        window.location.reload();
     }
 
     window.onload = function() {

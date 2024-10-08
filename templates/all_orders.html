@@ -19,6 +19,18 @@
             <p class="text-gray-600 mb-2">Order Date: {{ order.order_datetime }}</p>
             <p class="text-gray-600 mb-2">Total Amount: ${{ order.total_price }}</p>
             <p class="text-gray-600 mb-2">Status: {{ order.status }}</p>
+            <form action="/update_order_status/{{ order.order_id }}" method="post">
+                <label for="status" class="block text-gray-700">Status:</label>
+                <select name="status" id="status" class="mb-2 p-2 border rounded">
+                    <option value="Pending" {% if order.status == 'Pending' %}selected{% endif %}>Pending</option>
+                    <option value="Preparing" {% if order.status == 'Processing' %}selected{% endif %}>Processing</option>
+                    <option value="RTD" {% if order.status == 'Completed' %}selected{% endif %}>RTD</option>
+                    <option value="OTW" {% if order.status == 'Cancelled' %}selected{% endif %}>OTW</option>
+                    <option value="Delivered" {% if order.status == 'Cancelled' %}selected{% endif %}>Delivered</option>
+
+                </select>
+                <button type="submit" class="bg-green-500 text-white py-2 px-4 rounded-lg hover:bg-green-600 transition duration-200">Update Status</button>
+            </form>
             <h4 class="text-lg font-semibold mb-2">Order Information:</h4>
             <ul class="text-gray-600 mb-4">
                 {% for pizza in order.pizzas %}
