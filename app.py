@@ -7,7 +7,7 @@ from accountpage import account_pointer
 from itemspage import items_pointer
 from checkoutpage import checkout_pointer
 from orderpage import order_pointer
-import atexit
+from report import report_pointer
 
 app = Flask(__name__)
 app.secret_key = 'idk_what_this_does'
@@ -20,6 +20,7 @@ app.register_blueprint(cart_pointer)
 app.register_blueprint(items_pointer)
 app.register_blueprint(checkout_pointer)
 app.register_blueprint(order_pointer)
+app.register_blueprint(report_pointer)
 
 if __name__ == '__main__':
     app.run(debug=False)

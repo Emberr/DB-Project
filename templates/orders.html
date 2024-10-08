@@ -7,30 +7,47 @@
     <title>Order Details</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
-        function startTimer(orderId, timeLeft) {
-            const timerElement = document.getElementById(`timer-${orderId}`);
-            const cancelButton = document.getElementById(`cancel-button-${orderId}`);
-            const interval = setInterval(() => {
-                if (timeLeft <= 0) {
-                    clearInterval(interval);
-                    timerElement.innerText = 'Order can no longer be canceled.';
-                    cancelButton.disabled = true;
-                    window.location.reload();
-                } else {
-                    const minutes = Math.floor(timeLeft / 60);
-                    const seconds = timeLeft % 60;
-                    timerElement.innerText = `Time left to cancel: ${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
-                    timeLeft--;
-                }
-            }, 1000);
-        }
+    function startTimer(orderId, timeLeft) {
+        const timerElement = document.getElementById(`timer-${orderId}`);
+        const cancelButton = document.getElementById(`cancel-button-${orderId}`);
+        const interval = setInterval(() => {
+            if (timeLeft <= 0) {
+                clearInterval(interval);
+                timerElement.innerText = 'Order can no longer be canceled.';
+                cancelButton.disabled = true;
+                updateOrderStatus(orderId, 'preparing');
+            } else {
+                const minutes = Math.floor(timeLeft / 60);
+                const seconds = timeLeft % 60;
+                timerElement.innerText = `Time left to cancel: ${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
+                timeLeft--;
+            }
+        }, 1000);
+    }
 
-        window.onload = function() {
-            {% for order in orders %}
-                startTimer({{ order.order_id }}, {{ order.time_left }});
-            {% endfor %}
-        };
-    </script>
+    function updateOrderStatus(orderId, status) {
+        fetch(`/update_order_status/${orderId}`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ status: status })
+        }).then(response => {
+            if (!response.ok) {
+                console.error('Failed to update order status');
+            }
+        }).catch(error => {
+            console.error('Error:', error);
+        });
+        window.location.reload();
+    }
+
+    window.onload = function() {
+        {% for order in orders %}
+            startTimer({{ order.order_id }}, {{ order.time_left }});
+        {% endfor %}
+    };
+</script>
 </head>
 <body class="bg-gray-100 min-h-screen flex flex-col items-center justify-center text-center">
     <div class="w-full flex justify-end p-4">
@@ -46,7 +63,7 @@
                 <div class="grid grid-cols-1 gap-4">
                     {% for item in order.cart %}
                     <div class="bg-gray-100 p-4 rounded-lg">
-                        <h4 class="text-lg font-semibold">{{ item.name }}</h4>
+                        <h4 class="text-lg font-semibold">{{ item.name }}{% if item.quantity > 1 %} x{{ item.quantity }}{% endif %}</h4>
                         <p class="text-gray-600">Price: ${{ item.price }}</p>
                     </div>
                     {% endfor %}
@@ -62,6 +79,28 @@
             <div class="mb-4">
                 <h3 class="text-xl font-semibold text-gray-800">Order Date and Time</h3>
                 <p class="text-gray-600">{{ order.order_datetime }}</p>
+            </div>
+            <div class="mb-4">
+                <h3 class="text-xl font-semibold text-gray-800">Status</h3>
+                <p class="text-gray-600">{{ order.status }}</p>
+            </div>
+            <div class="mb-4">
+                <h3 class="text-xl font-semibold text-gray-800">ETA</h3>
+                <p class="text-gray-600">{{ order.eta }}</p>
+            </div>
+            <div class="mb-4">
+                <h3 class="text-xl font-semibold text-gray-800">Order Information</h3>
+                <ul class="text-gray-600">
+                    {% for pizza in order.pizzas %}
+                        <li>Pizza: {{ pizza.pizza.name }}{% if pizza.quantity > 1 %} x{{ pizza.quantity }}{% endif %}</li>
+                    {% endfor %}
+                    {% for dessert in order.desserts %}
+                        <li>Dessert: {{ dessert.dessert.name }}{% if dessert.quantity > 1 %} x{{ dessert.quantity }}{% endif %}</li>
+                    {% endfor %}
+                    {% for drink in order.drinks %}
+                        <li>Drink: {{ drink.drink.name }}{% if drink.quantity > 1 %} x{{ drink.quantity }}{% endif %}</li>
+                    {% endfor %}
+                </ul>
             </div>
             {% if order.time_left > 0 %}
             <form action="/cancel_order/{{ order.order_id }}" method="post">
