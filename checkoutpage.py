@@ -1,4 +1,3 @@
-# checkoutpage.py
 import datetime
 from flask import Blueprint, render_template, session, redirect, url_for
 from sqlalchemy.orm import sessionmaker
@@ -53,7 +52,7 @@ def place_order():
     for item in cart:
         item_type = item['type']
         item_id = item['id']
-        quantity = item.get('quantity', 1)  # Default to 1 if quantity is not provided
+        quantity = item.get('quantity', 1)  # Automatically set to 1 if not no quantity is specified
 
         if item_type == 'pizza':
             pizza = db_session.query(Pizza).filter_by(name=item_id).first()

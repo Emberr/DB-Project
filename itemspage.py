@@ -46,7 +46,6 @@ def items():
     drinks = session1.query(Drink).all()
     desserts = session1.query(Dessert).all()
 
-    # Close the session
     session1.close()
 
     return render_template('items.html', username=username, pizzas=pizzas, drinks=drinks, desserts=desserts)

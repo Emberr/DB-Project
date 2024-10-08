@@ -49,12 +49,10 @@ def cancel_order(order_id):
         flash('Order not found.')
         return redirect(url_for('order.orders'))
 
-    # Delete related records in OrderPizza, OrderDessert, and OrderDrink tables
     db_session.query(OrderPizza).filter_by(order_id=order_id).delete()
     db_session.query(OrderDessert).filter_by(order_id=order_id).delete()
     db_session.query(OrderDrink).filter_by(order_id=order_id).delete()
 
-    # Delete the order
     db_session.delete(order)
     db_session.commit()
 
