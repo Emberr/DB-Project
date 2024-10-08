@@ -56,6 +56,7 @@ def login():
             stored_password = user.password
             if bcrypt.checkpw(password.encode('utf-8'), stored_password.encode('utf-8')):
                 session['username'] = username
+                session['customer_id'] = user.customer_id
                 session_db.close()
                 return jsonify(success=True)
             else:

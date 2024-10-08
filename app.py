@@ -6,6 +6,7 @@ from dashboard import dashboard_pointer
 from accountpage import account_pointer
 from itemspage import items_pointer
 from checkoutpage import checkout_pointer
+from orderpage import order_pointer
 import atexit
 
 app = Flask(__name__)
@@ -18,6 +19,7 @@ app.register_blueprint(account_pointer)
 app.register_blueprint(cart_pointer)
 app.register_blueprint(items_pointer)
 app.register_blueprint(checkout_pointer)
+app.register_blueprint(order_pointer)
 
 if __name__ == '__main__':
     app.run(debug=False)

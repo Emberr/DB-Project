@@ -1,0 +1,77 @@
+<!-- templates/orders.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Order Details</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        function startTimer(orderId, timeLeft) {
+            const timerElement = document.getElementById(`timer-${orderId}`);
+            const cancelButton = document.getElementById(`cancel-button-${orderId}`);
+            const interval = setInterval(() => {
+                if (timeLeft <= 0) {
+                    clearInterval(interval);
+                    timerElement.innerText = 'Order can no longer be canceled.';
+                    cancelButton.disabled = true;
+                    window.location.reload();
+                } else {
+                    const minutes = Math.floor(timeLeft / 60);
+                    const seconds = timeLeft % 60;
+                    timerElement.innerText = `Time left to cancel: ${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
+                    timeLeft--;
+                }
+            }, 1000);
+        }
+
+        window.onload = function() {
+            {% for order in orders %}
+                startTimer({{ order.order_id }}, {{ order.time_left }});
+            {% endfor %}
+        };
+    </script>
+</head>
+<body class="bg-gray-100 min-h-screen flex flex-col items-center justify-center text-center">
+    <div class="w-full flex justify-end p-4">
+        <a href="/dashboard" class="bg-blue-500 text-white py-2 px-4 rounded-lg font-semibold hover:bg-blue-600 transition duration-200">Return to Dashboard</a>
+    </div>
+    <div class="bg-white p-6 rounded-lg shadow-lg w-full max-w-2xl">
+        <h2 class="text-3xl font-bold text-gray-800 mb-4">Order Details</h2>
+        {% for order in orders %}
+        <div class="mb-8 border-b pb-4">
+            <div id="timer-{{ order.order_id }}" class="text-red-500 font-semibold mb-4"></div>
+            <div class="mb-4">
+                <h3 class="text-xl font-semibold text-gray-800">Your Cart</h3>
+                <div class="grid grid-cols-1 gap-4">
+                    {% for item in order.cart %}
+                    <div class="bg-gray-100 p-4 rounded-lg">
+                        <h4 class="text-lg font-semibold">{{ item.name }}</h4>
+                        <p class="text-gray-600">Price: ${{ item.price }}</p>
+                    </div>
+                    {% endfor %}
+                </div>
+                <div class="mt-4">
+                    <h3 class="text-2xl font-bold text-gray-800">Total Price: ${{ order.total_price }}</h3>
+                </div>
+            </div>
+            <div class="mb-4">
+                <h3 class="text-xl font-semibold text-gray-800">Delivery Address</h3>
+                <p class="text-gray-600">{{ order.delivery_address }}</p>
+            </div>
+            <div class="mb-4">
+                <h3 class="text-xl font-semibold text-gray-800">Order Date and Time</h3>
+                <p class="text-gray-600">{{ order.order_datetime }}</p>
+            </div>
+            {% if order.time_left > 0 %}
+            <form action="/cancel_order/{{ order.order_id }}" method="post">
+                <button id="cancel-button-{{ order.order_id }}" type="submit" class="bg-red-500 text-white py-2 px-4 rounded-lg font-semibold hover:bg-red-600 transition duration-200">Cancel Order</button>
+            </form>
+            {% else %}
+            <p>Order can no longer be canceled.</p>
+            {% endif %}
+        </div>
+        {% endfor %}
+    </div>
+</body>
+</html>
