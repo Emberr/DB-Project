@@ -21,7 +21,6 @@ def checkout():
     total_price = "{:.2f}".format(sum(float(item['price']) for item in cart))
     address = session.get('address', customer.address)
 
-    # Get the list of possible delivery addresses
     delivery_postal_codes = db_session.query(DeliveryPerson.postal_code).distinct().all()
     delivery_postal_codes = [code[0] for code in delivery_postal_codes]
 

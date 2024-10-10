@@ -36,7 +36,7 @@ class Order(Base):
     order_id = Column(Integer, primary_key=True)
     customer_id = Column(Integer, ForeignKey('customer.customer_id'))
     order_datetime = Column(DateTime)
-    status = Column(String(15))
+    status = Column(String(50))
     eta = Column(DateTime)
     delivery_address = Column(String(50))
     cancellation_deadline = Column(DateTime)
@@ -114,6 +114,7 @@ class DeliveryPerson(Base):
     name = Column(String(25))
     is_available = Column(Boolean)
     postal_code = Column(String(4))
+    next_available = Column(DateTime)
     deliveries = relationship('Delivery', back_populates='deliverer')
 
 class Delivery(Base):
@@ -121,7 +122,7 @@ class Delivery(Base):
     delivery_id = Column(Integer, primary_key=True)
     deliverer_id = Column(Integer, ForeignKey('delivery_person.deliverer_id'))
     start_time = Column(DateTime)
-    status = Column(String(15))
+    status = Column(String(50))
     deliverer = relationship('DeliveryPerson', back_populates='deliveries')
     orders = relationship('DeliveryOrder', back_populates='delivery')
 
