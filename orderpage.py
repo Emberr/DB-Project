@@ -1,5 +1,5 @@
 from flask import Blueprint, render_template, session, flash, redirect, url_for, request, jsonify
-from TABLES import Session, Order, OrderPizza, OrderDessert, OrderDrink, DeliveryOrder, Delivery, DeliveryPerson
+from TABLES import Customer, Session, Order, OrderPizza, OrderDessert, OrderDrink, DeliveryOrder, Delivery, DeliveryPerson
 import time
 from datetime import datetime, timedelta
 import threading
@@ -18,7 +18,7 @@ def can_cancel_order(order_datetime):
 
 def update_order_status_after_cancel(order_id):
     print(f'Waiting for {cancel_time_seconds} seconds before cancelling order {order_id}')
-    time.sleep(cancel_time_seconds)  # Wait for 5 minutes
+    time.sleep(cancel_time_seconds)
     db_session2 = Session()
     order = db_session2.query(Order).filter_by(order_id=order_id).first()
     if order and order.status == 'Pending':
@@ -51,6 +51,7 @@ def orders():
     for order in orders:
         order_placement_time = order.order_datetime
         order.time_left = max(0, (order_placement_time + timedelta(seconds=cancel_time_seconds) - current_time).total_seconds())
+        order.time_left_str = "{:.2f}".format(order.time_left)
         if order.status == 'Pending':
             threading.Thread(target=update_order_status_after_cancel, args=(order.order_id,)).start()
 
@@ -62,6 +63,13 @@ def cancel_order(order_id):
     if not order:
         flash('Order not found.')
         return redirect(url_for('order.orders'))
+
+    customer = db_session1.query(Customer).filter_by(customer_id=order.customer_id).first()
+    if not customer:
+        flash('Customer not found.')
+        return redirect(url_for('order.orders'))
+
+    total_pizzas_in_order = db_session1.query(OrderPizza).filter_by(order_id=order_id).count()
 
     delivery_order = db_session1.query(DeliveryOrder).filter_by(order_id=order_id).first()
     if delivery_order:
@@ -87,11 +95,10 @@ def cancel_order(order_id):
                 delivery_person.is_available = True
                 db_session1.commit()
 
-    # Delete related rows in the order items tables
     db_session1.query(OrderPizza).filter_by(order_id=order_id).delete()
     db_session1.query(OrderDessert).filter_by(order_id=order_id).delete()
     db_session1.query(OrderDrink).filter_by(order_id=order_id).delete()
-
+    customer.total_pizzas_ordered -= total_pizzas_in_order
     db_session1.delete(order)
     db_session1.commit()
 

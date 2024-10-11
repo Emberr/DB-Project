@@ -23,7 +23,8 @@
                 {% endfor %}
             </div>
             <div class="mt-4">
-                <h3 class="text-2xl font-bold text-gray-800">Total Price: ${{ total_price }}</h3>
+                <h3 class="text-2xl font-bold text-gray-800">Total Price: <span id="totalPrice">${{ total_price }}</span></h3>
+                <p id="discountDetails">Discount: -$<span>{{ discount_amount }}</span></p>
             </div>
         </div>
         <div class="mb-4">
@@ -41,7 +42,7 @@
         </div>
         <div class="mb-4">
             <h3 class="text-xl font-semibold text-gray-800">Discount Code</h3>
-            <form action="/apply_discount" method="post">
+            <form id="discountForm" action="/apply_discount" method="post">
                 <input type="text" name="discount_code" class="border border-gray-300 p-2 rounded-lg w-full mb-2" placeholder="Enter discount code">
                 <button type="submit" class="bg-green-500 text-white py-2 px-4 rounded-lg font-semibold hover:bg-green-600 transition duration-200">Apply Discount</button>
             </form>
@@ -50,8 +51,35 @@
     </div>
 
     <script>
+        document.getElementById('discountForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+            const formData = new FormData(this);
+            fetch('/apply_discount', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.error) {
+                    alert(data.error);
+                } else if (data.success) {
+                    alert('Discount applied: ' + data.discount_percentage + '%');
+                    document.getElementById('totalPrice').textContent = '$' + data.total_price;
+                    document.getElementById('discountDetails').textContent = 'Discount: -$' + data.discount_amount;
+                }
+            });
+        });
+
         document.getElementById('placeOrderButton').addEventListener('click', function() {
-            fetch('{{ url_for("checkout.place_order") }}')
+            fetch('/check_birthday_discount')
+            .then(response => response.json())
+            .then(data => {
+                if (data.birthday) {
+                    alert('Happy Birthday! The cheapest pizza and drink are free!');
+                }
+                fetch('{{ url_for("checkout.place_order") }}', {
+                    method: 'POST'
+                })
                 .then(response => response.json())
                 .then(data => {
                     if (data.error) {
@@ -60,6 +88,7 @@
                         window.location.href = '{{ url_for("order.orders") }}';
                     }
                 });
+            });
         });
     </script>
 </body>

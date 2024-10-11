@@ -1,7 +1,6 @@
 # itemspage.py
 from flask import Blueprint, render_template, request, flash, redirect, url_for, session
 from sqlalchemy.orm import sessionmaker
-from sqlalchemy import create_engine
 from TABLES import Pizza, Drink, Ingredient, PizzaIngredient, Dessert, engine
 
 items_pointer = Blueprint('items', __name__)

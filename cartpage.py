@@ -22,9 +22,13 @@ def add_to_cart():
 
     username = session['username']
     item_id = request.form.get('item_id')
+    print(f'Adding item {item_id} to cart for user {username}')
     item_type = request.form.get('item_type')
+    print(f'Item type: {item_type}')
     item_name = request.form.get('item_name')
+    print(f'Item name: {item_name}')
     item_price = request.form.get('item_price')
+    print(f'Item price: {item_price}')
 
     if 'cart' not in session or not isinstance(session['cart'], dict):
         session['cart'] = {}

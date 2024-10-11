@@ -87,12 +87,9 @@ pizza_ingredients = [
 ]
 
 
-# Add and commit the data
 for pizza_ingredient in pizza_ingredients:
     session.execute(insert(PizzaIngredient).values(pizza_ingredient))
 
-# Commit the transaction
 session.commit()
 
-# Close the session
 session.close()

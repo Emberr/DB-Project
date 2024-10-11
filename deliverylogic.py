@@ -15,7 +15,7 @@ def assign_delivery():
         postal_code = order.delivery_address[:4]
         delivery_person = db_session.query(DeliveryPerson).filter(
             DeliveryPerson.postal_code == postal_code,
-            DeliveryPerson.next_available <= datetime.now() - timedelta(minutes=30)
+            DeliveryPerson.next_available <= datetime.now()
         ).first()
 
         if not delivery_person:
@@ -64,6 +64,7 @@ def assign_delivery():
             if delivery_person.is_available:
                 order.eta = datetime.now() + timedelta(minutes=18)
                 delivery_person.next_available = datetime.now() + timedelta(minutes=30)
+                db_session.commit()
 
             else:
                 order.eta = delivery_person.next_available + timedelta(minutes=15)

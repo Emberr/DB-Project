@@ -26,7 +26,6 @@ class DiscountCode(Base):
     __tablename__ = 'discount_code'
     code = Column(String(7), primary_key=True)
     discount_percent = Column(DECIMAL(3, 2))
-    is_used = Column(Boolean)
     customer_id = Column(Integer, ForeignKey('customer.customer_id'))
     valid_to = Column(Date)
     customer = relationship('Customer', back_populates='discount_codes')
