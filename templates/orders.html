@@ -17,7 +17,7 @@
                 window.location.reload();
             } else {
                 const minutes = Math.floor(timeLeft / 60);
-                const seconds = timeLeft % 60;
+                const seconds = Math.floor(timeLeft % 60);
                 timerElement.innerText = `Time left to cancel: ${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
                 timeLeft--;
             }

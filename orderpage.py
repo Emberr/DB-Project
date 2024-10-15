@@ -9,7 +9,7 @@ order_pointer = Blueprint('order', __name__)
 
 db_session1 = Session()
 
-cancel_time_seconds = 30
+cancel_time_seconds = 300
 
 
 def can_cancel_order(order_datetime):
@@ -88,7 +88,8 @@ def cancel_order(order_id):
 
             other_deliveries = db_session1.query(Delivery).filter(
                 Delivery.deliverer_id == delivery_person.deliverer_id,
-                Delivery.status == 'In Oven'
+                Delivery.status == 'In Oven',
+                Delivery.status == 'Preparing'
             ).all()
 
             if not other_deliveries:

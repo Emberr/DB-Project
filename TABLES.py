@@ -15,20 +15,17 @@ class Customer(Base):
     birthdate = Column(Date)
     phone_number = Column(String(15))
     address = Column(String(50))
-    username = Column(String(10), unique=True)
+    username = Column(String(20), unique=True)
     password = Column(String(255))
     total_pizzas_ordered = Column(Integer)
-    gender = Column(String(5))
-    discount_codes = relationship('DiscountCode', back_populates='customer')
+    gender = Column(String(6))
     orders = relationship('Order', back_populates='customer')
 
 class DiscountCode(Base):
     __tablename__ = 'discount_code'
     code = Column(String(7), primary_key=True)
     discount_percent = Column(DECIMAL(3, 2))
-    customer_id = Column(Integer, ForeignKey('customer.customer_id'))
     valid_to = Column(Date)
-    customer = relationship('Customer', back_populates='discount_codes')
 
 class Order(Base):
     __tablename__ = 'orders'
@@ -38,10 +35,7 @@ class Order(Base):
     status = Column(String(50))
     eta = Column(DateTime)
     delivery_address = Column(String(50))
-    cancellation_deadline = Column(DateTime)
-    discount_code = Column(String(7), ForeignKey('discount_code.code'))
     total_price = Column(DECIMAL(7, 2))
-    is_birthday_applied = Column(Boolean)
     customer = relationship('Customer', back_populates='orders')
     pizzas = relationship('OrderPizza', back_populates='order')
     desserts = relationship('OrderDessert', back_populates='order')

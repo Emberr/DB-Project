@@ -126,7 +126,7 @@ def place_order():
                     db_session.add(order_drink)
 
     if customer.total_pizzas_ordered >= 10 and discount_applied_pizza:
-        customer.total_pizzas_ordered = 0
+        customer.total_pizzas_ordered -= 10
     else:
         customer.total_pizzas_ordered += total_pizzas_in_order
     db_session.commit()

@@ -40,7 +40,7 @@ def report():
     ).join(Customer).group_by('month')
 
     if 'region' in filters:
-        query = query.filter(Customer.address == filters['region'])
+        query = query.filter(Customer.address.like(f"{filters['region']}%"))
     if 'gender' in filters:
         query = query.filter(Customer.gender == filters['gender'])
     if 'age_min' in filters and 'age_max' in filters:

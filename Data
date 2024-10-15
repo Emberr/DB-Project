@@ -6,11 +6,11 @@ with engine.connect() as conn:
             {'name': 'So Not Halal Mode (Pepperoni Pizza)'},
             {'name': 'Performance Enhancer (Pineapple Pizza)'},
             {'name': 'Veggie Virgin (Vegetarian Pizza)'},
-            {'name': 'Vegan (Not good, do not order)'},
-            {'name': 'Indian Slums (Chicken Curry Pizza)'},
-            {'name': 'The Border Jumper (Mexican Pizza)'},
+            {'name': 'Vegan (Cheese Pizza)'},
+            {'name': 'Indian Classic (Chicken Curry Pizza)'},
+            {'name': 'Mexico's Finest (Mexican Pizza)'},
             {'name': "O'Block (Chicago's Finest Pizza)"},
-            {'name': 'The Bomber (Kebab Pizza)'},
+            {'name': 'Arab All the Way! (Kebab Pizza)'},
             {'name': 'The Greek Freak (Gyros Pizza)'}
         ]
     )
@@ -41,7 +41,7 @@ with engine.connect() as conn:
     conn.execute(
         insert(Dessert),
         [
-            {'name': 'Twin Tower Explosion', 'cost': 9.11},
+            {'name': 'Flavor Explosion', 'cost': 8.00},
             {'name': 'Pompeii Lava Cake', 'cost': 7.90}
         ]
     )
@@ -52,3 +52,72 @@ with engine.connect() as conn:
             {'name': 'Get Drunk(10 Shot Cocktail)', 'cost': 9.50}
         ]
     )
+    pizza_ingredients = [
+    # Gooey Cheese ALL Over Your Face (Four Cheese Pizza)
+    {'pizza_id': 1, 'ingredient_id': 1},  # Mozzarella Cheese
+    {'pizza_id': 1, 'ingredient_id': 3},  # Cheddar Cheese
+    {'pizza_id': 1, 'ingredient_id': 4},  # Parmesan Cheese
+    {'pizza_id': 1, 'ingredient_id': 5},  # Gorgonzola Cheese
+    {'pizza_id': 1, 'ingredient_id': 6},  # Tomato Sauce
+    {'pizza_id': 1, 'ingredient_id': 7},  # Pizza Dough
+
+    # So Not Halal Mode (Pepperoni Pizza)
+    {'pizza_id': 2, 'ingredient_id': 1},  # Mozzarella Cheese
+    {'pizza_id': 2, 'ingredient_id': 8},  # Pepperoni
+    {'pizza_id': 2, 'ingredient_id': 19},  # Italian Sausage
+    {'pizza_id': 2, 'ingredient_id': 6},  # Tomato Sauce
+    {'pizza_id': 2, 'ingredient_id': 7},  # Pizza Dough
+
+    # Performance Enhancer (Pineapple Pizza)
+    {'pizza_id': 3, 'ingredient_id': 1},  # Mozzarella Cheese
+    {'pizza_id': 3, 'ingredient_id': 6},  # Tomato Sauce
+    {'pizza_id': 3, 'ingredient_id': 7},  # Pizza Dough
+    {'pizza_id': 3, 'ingredient_id': 9},  # Pineapple
+
+    # Veggie Virgin (Vegetarian Pizza)
+    {'pizza_id': 4, 'ingredient_id': 1},  # Mozzarella Cheese
+    {'pizza_id': 4, 'ingredient_id': 6},  # Tomato Sauce
+    {'pizza_id': 4, 'ingredient_id': 7},  # Pizza Dough
+    {'pizza_id': 4, 'ingredient_id': 10},  # Bell Pepper
+    {'pizza_id': 4, 'ingredient_id': 11},  # Onion
+    {'pizza_id': 4, 'ingredient_id': 12},  # Black Olives
+
+    # Vegan (Not good, do not order)
+    {'pizza_id': 5, 'ingredient_id': 2},  # Vegan Mozzarella Cheese
+    {'pizza_id': 5, 'ingredient_id': 6},  # Tomato Sauce
+    {'pizza_id': 5, 'ingredient_id': 7},  # Pizza Dough
+
+    # Indian Slums (Chicken Curry Pizza)
+    {'pizza_id': 6, 'ingredient_id': 1},  # Mozzarella Cheese
+    {'pizza_id': 6, 'ingredient_id': 6},  # Tomato Sauce
+    {'pizza_id': 6, 'ingredient_id': 7},  # Pizza Dough
+    {'pizza_id': 6, 'ingredient_id': 13},  # Chicken
+    {'pizza_id': 6, 'ingredient_id': 14},  # Curry Sauce
+
+    # The Border Jumper (Mexican Pizza)
+    {'pizza_id': 7, 'ingredient_id': 1},  # Mozzarella Cheese
+    {'pizza_id': 7, 'ingredient_id': 6},  # Tomato Sauce
+    {'pizza_id': 7, 'ingredient_id': 7},  # Pizza Dough
+    {'pizza_id': 7, 'ingredient_id': 17},  # Jalapeños
+    {'pizza_id': 7, 'ingredient_id': 18},  # Black Beans
+
+    # O'Block (Chicago's Finest Pizza)
+    {'pizza_id': 8, 'ingredient_id': 1},  # Mozzarella Cheese
+    {'pizza_id': 8, 'ingredient_id': 3},  # Cheddar Cheese
+    {'pizza_id': 8, 'ingredient_id': 6},  # Tomato Sauce
+    {'pizza_id': 8, 'ingredient_id': 7},  # Pizza Dough
+    {'pizza_id': 8, 'ingredient_id': 8},  # Pepperoni
+    {'pizza_id': 8, 'ingredient_id': 19},  # Italian Sausage
+
+    # The Bomber (Kebab Pizza)
+    {'pizza_id': 9, 'ingredient_id': 1},  # Mozzarella Cheese
+    {'pizza_id': 9, 'ingredient_id': 6},  # Tomato Sauce
+    {'pizza_id': 9, 'ingredient_id': 7},  # Pizza Dough
+    {'pizza_id': 9, 'ingredient_id': 15},  # Kebab Meat
+
+    # The Greek Freak (Gyros Pizza)
+    {'pizza_id': 10, 'ingredient_id': 1},  # Mozzarella Cheese
+    {'pizza_id': 10, 'ingredient_id': 6},  # Tomato Sauce
+    {'pizza_id': 10, 'ingredient_id': 7},  # Pizza Dough
+    {'pizza_id': 10, 'ingredient_id': 16},  # Gyros Meat
+]

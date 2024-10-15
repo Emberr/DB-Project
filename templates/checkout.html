@@ -63,7 +63,7 @@
                 if (data.error) {
                     alert(data.error);
                 } else if (data.success) {
-                    alert('Discount applied: ' + data.discount_percentage + '%');
+                    alert('Discount applied: ' + data.discount_percentage*100 + '%');
                     document.getElementById('totalPrice').textContent = '$' + data.total_price;
                     document.getElementById('discountDetails').textContent = 'Discount: -$' + data.discount_amount;
                 }
